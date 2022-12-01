@@ -20,19 +20,18 @@ puzzle = Puzzle(year=2022, day=1)
 
 calories = puzzle.input_data.split("\n")  # convert string to list
 elves = []
-sum = 0
+sum_calories = 0
 for calorie in calories:
     if calorie == "":
-        elves.append(sum)
-        sum = 0
+        elves.append(sum_calories)
+        sum_calories = 0
     else:
-        sum += int(calorie)
+        sum_calories += int(calorie)
 print(max(elves))
 
 # --------------------------------
 # Solution Part 2
 # --------------------------------
 
-elves.sort(reverse=True)
-top3_sum = elves[0] + elves[1] + elves[2]
+top3_sum = sum(sorted(elves, reverse=True)[:3])
 print(top3_sum)
