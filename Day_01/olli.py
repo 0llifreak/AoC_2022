@@ -28,3 +28,11 @@ for calorie in calories:
     else:
         sum += int(calorie)
 print(max(elves))
+
+# --------------------------------
+# Solution Part 2
+# --------------------------------
+
+elves.sort(reverse=True)
+top3_sum = elves[0] + elves[1] + elves[2]
+print(top3_sum)
