@@ -2,7 +2,7 @@
 import numpy as np
 
 
-my_file = open("Day_01/input_leo.txt", "r")
+#my_file = open("Day_01/input_leo.txt", "r")
 
 
 # data = my_file.read()
