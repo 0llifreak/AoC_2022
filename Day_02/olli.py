@@ -40,7 +40,6 @@ for round in rps:
         score += 2
     elif me == "Z":
         score += 3
-    # print(opponent, me)
 
     # Calculate game score
     # Rock defeats Scissors
