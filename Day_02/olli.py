@@ -62,3 +62,11 @@ for round in rps:
         score += 3
 
 print("Score", score)
+
+# --------------------------------
+# Solution Part 2
+# --------------------------------
+
+# X = Lose
+# Y = Draw
+# Z = Win
