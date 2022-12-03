@@ -31,3 +31,27 @@ for letter in double_letter:
 
 
 print("Total Part 1:", total)
+
+badge = []
+i = 0
+while i < 300:
+    for a in range(len(data["Backpacks"][i])):
+        for b in range(len(data["Backpacks"][i + 1])):
+            for c in range(len(data["Backpacks"][i + 2])):
+                if data["Backpacks"][i][a] == data["Backpacks"][i + 1][b] == data["Backpacks"][i + 2][c]:
+                    badge.append(data["Backpacks"][i][a])
+                    break
+            else:  # only execute when it's no break in the inner loop
+                continue
+            break
+        else:  # only execute when it's no break in the inner loop
+            continue
+        break
+    i += 3
+
+total2 = 0
+for letter in badge:
+    total2 += alphabet[letter]
+
+
+print("Total Part 2:", total2)
