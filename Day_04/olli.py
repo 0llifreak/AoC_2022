@@ -33,3 +33,15 @@ for pair in sections:
     if len(set(first_list + second_list)) == len(first_list) or len(set(first_list + second_list)) == len(second_list):
         counter += 1
 print("Solution 1:", counter)
+
+# --------------------------------
+# Solution Part 2
+# --------------------------------
+counter = 0
+for pair in sections:
+    pair = pair.split(",")
+    first_list = get_range(pair[0])
+    second_list = get_range(pair[1])
+    if len(set(first_list + second_list)) < (len(first_list) + len(second_list)):
+        counter += 1
+print("Solution 2:", counter)
