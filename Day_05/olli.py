@@ -43,16 +43,15 @@ cargo_dict = {
 movements = cargo[10:]
 for movement in movements:
     movement_list = movement.split(" ")
-
-    count = int(movement_list[1])
-    start = movement_list[3]
-    end = movement_list[5]
-
-    for _ in range(count):
-        cargo_dict[end].append(cargo_dict[start].pop())
-
+    for _ in range(int(movement_list[1])):
+        cargo_dict[movement_list[5]].append(cargo_dict[movement_list[3]].pop())
 
 solution = ""
 for stack in cargo_dict.values():
     solution += stack[-1]
 print("Solution 1:", solution)
+
+
+# --------------------------------
+# Solution Part 2
+# --------------------------------
