@@ -1,6 +1,7 @@
 from functools import reduce  # forward compatibility for Python 3
 import operator
 import pprint
+import json
 
 
 def getFromDict(dataDict, mapList):
@@ -33,8 +34,9 @@ keys = []
 line = 0
 
 sums = []
+sums2 = []
 
-while line < 1087:
+while line < 1090:
     if data[line][0:4] == "$ cd" and data[line][5] != ".":
         keys.append(data[line][5:])
         keys.append("inner_sum")
@@ -62,6 +64,7 @@ while line < 1087:
     else:
         keys.append("inner_sum")
         current_sum = getFromDict(Data_structure, keys)
+        sums2.append(current_sum)
         if current_sum < 100001:
             sums.append(current_sum)
         keys.pop()
@@ -71,10 +74,24 @@ while line < 1087:
 
 pprint.pprint(Data_structure)
 
-print(sums)
+with open("Day_07/output_leo.txt", "w") as convert_file:
+    convert_file.write(json.dumps(Data_structure, indent=4))
 
+
+print(sums)
 total = 0
 for sum in sums:
     total += sum
 
-print(total)
+print("Part 1: ", total)
+
+
+to_empty = 30000000 - (70000000 - Data_structure["/"]["inner_sum"])
+
+print(to_empty)
+possibilities = []
+for sum in sums2:
+    if sum >= to_empty:
+        possibilities.append(sum)
+
+print("Part 2: ", min(possibilities))
