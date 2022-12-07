@@ -1,4 +1,4 @@
-from functools import reduce  # forward compatibility for Python 3
+from functools import reduce
 import operator
 import pprint
 import json
