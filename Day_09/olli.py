@@ -32,8 +32,18 @@ motions = puzzle.input_data.split("\n")
 # R 2"""
 # motions = motions.split("\n")
 
+# motions = """R 5
+# U 8
+# L 8
+# D 3
+# R 17
+# D 10
+# L 25
+# U 20"""
+# motions = motions.split("\n")
 
-def tail_movement(head_position, tail_position):
+
+def tail_movement(head_position, tail_position, positions=[]):
     head_h = int(head_position[0])
     head_v = int(head_position[1])
     tail_h = int(tail_position[0])
@@ -69,7 +79,12 @@ def tail_movement(head_position, tail_position):
 
 head_position = np.array([0, 0])  # horizontal, vertical
 tail_position = np.array([0, 0])  # horizontal, vertical
+rope_position = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+for i in range(10):
+    rope_position[i] = np.array([0, 0])
 positions = []
+rope_tail_positions = []
+
 for motion in motions:
     direction = motion.split(" ")[0]
     steps = int(motion.split(" ")[1])
@@ -78,22 +93,58 @@ for motion in motions:
     if direction == "U":
         for _ in range(steps):
             head_position += np.array([0, 1])
-            tail_position = tail_movement(head_position, tail_position)
+            tail_position = tail_movement(head_position, tail_position, positions)
+            # Part 2
+            rope_position[0] += np.array([0, 1])
+            for idx, position in enumerate(rope_position):
+                if idx == len(rope_position) - 1:
+                    break
+                rope_tail = rope_position[idx + 1]
+                rope_position[idx + 1] = tail_movement(position, rope_tail)
+            rope_tail_positions.append(rope_position[-1].copy().tolist())
 
     elif direction == "D":
         for _ in range(steps):
             head_position += np.array([0, -1])
-            tail_position = tail_movement(head_position, tail_position)
+            tail_position = tail_movement(head_position, tail_position, positions)
+            # Part 2
+            rope_position[0] += np.array([0, -1])
+            for idx, position in enumerate(rope_position):
+                if idx == len(rope_position) - 1:
+                    break
+                rope_tail = rope_position[idx + 1]
+                rope_position[idx + 1] = tail_movement(position, rope_tail)
+            rope_tail_positions.append(rope_position[-1].copy().tolist())
 
     elif direction == "R":
         for _ in range(steps):
             head_position += np.array([1, 0])
-            tail_position = tail_movement(head_position, tail_position)
+            tail_position = tail_movement(head_position, tail_position, positions)
+            # Part 2
+            rope_position[0] += np.array([1, 0])
+            for idx, position in enumerate(rope_position):
+                if idx == len(rope_position) - 1:
+                    break
+                rope_tail = rope_position[idx + 1]
+                rope_position[idx + 1] = tail_movement(position, rope_tail)
+            rope_tail_positions.append(rope_position[-1].copy().tolist())
 
     elif direction == "L":
         for _ in range(steps):
             head_position += np.array([-1, 0])
-            tail_position = tail_movement(head_position, tail_position)
+            tail_position = tail_movement(head_position, tail_position, positions)
+            # Part 2
+            rope_position[0] += np.array([-1, 0])
+            for idx, position in enumerate(rope_position):
+                if idx == len(rope_position) - 1:
+                    break
+                rope_tail = rope_position[idx + 1]
+                rope_position[idx + 1] = tail_movement(position, rope_tail)
+            rope_tail_positions.append(rope_position[-1].copy().tolist())
 
 positions.sort()  # remove duplicate positions
+rope_tail_positions.sort()  # remove duplicate positions
 print("Solution 1:", len(list(positions for positions, _ in itertools.groupby(positions))))  # remove duplicate positions
+print(
+    "Solution 2:", len(list(rope_tail_positions for rope_tail_positions, _ in itertools.groupby(rope_tail_positions)))
+)  # remove duplicate positions
