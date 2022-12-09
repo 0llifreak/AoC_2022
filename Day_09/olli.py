@@ -9,6 +9,7 @@
 # --------------------------------
 from aocd.models import Puzzle
 import numpy as np
+import itertools
 
 # --------------------------------
 # Get input data from AoC
@@ -21,38 +22,78 @@ puzzle = Puzzle(year=2022, day=9)
 
 motions = puzzle.input_data.split("\n")
 
-motions = """R 4
-U 4
-L 3
-D 1
-R 4
-D 1
-L 5
-R 2"""
-motions = motions.split("\n")
+# motions = """R 4
+# U 4
+# L 3
+# D 1
+# R 4
+# D 1
+# L 5
+# R 2"""
+# motions = motions.split("\n")
 
-# print(motions[0])
+
+def tail_movement(head_position, tail_position):
+    head_h = int(head_position[0])
+    head_v = int(head_position[1])
+    tail_h = int(tail_position[0])
+    tail_v = int(tail_position[1])
+
+    # Tail movement
+    if (abs(head_h - tail_h) + abs(head_v - tail_v)) >= 3:
+        if head_h - tail_h >= 1 and head_v - tail_v >= 1:
+            tail_position += np.array([1, 1])
+        elif head_h - tail_h >= 1 and head_v - tail_v <= -1:
+            tail_position += np.array([1, -1])
+        elif head_h - tail_h <= -1 and head_v - tail_v >= 1:
+            tail_position += np.array([-1, 1])
+        elif head_h - tail_h <= -1 and head_v - tail_v <= -1:
+            tail_position += np.array([-1, -1])
+
+    elif (head_v - tail_v) > 1:
+        # move up
+        tail_position += np.array([0, 1])
+    elif (head_v - tail_v) < -1:
+        # move down
+        tail_position += np.array([0, -1])
+    elif (head_h - tail_h) > 1:
+        # move right
+        tail_position += np.array([1, 0])
+    elif (head_h - tail_h) < -1:
+        # move left
+        tail_position += np.array([-1, 0])
+
+    positions.append(tail_position.copy().tolist())
+    return tail_position
+
+
 head_position = np.array([0, 0])  # horizontal, vertical
-
-print(head_position)
+tail_position = np.array([0, 0])  # horizontal, vertical
+positions = []
 for motion in motions:
     direction = motion.split(" ")[0]
     steps = int(motion.split(" ")[1])
-    print(direction, steps)
+
+    # Head movement
     if direction == "U":
         for _ in range(steps):
             head_position += np.array([0, 1])
-            print("UP")
+            tail_position = tail_movement(head_position, tail_position)
+
     elif direction == "D":
         for _ in range(steps):
             head_position += np.array([0, -1])
-            print("DOWN")
+            tail_position = tail_movement(head_position, tail_position)
+
     elif direction == "R":
         for _ in range(steps):
             head_position += np.array([1, 0])
-            print("RIGHT")
+            tail_position = tail_movement(head_position, tail_position)
+
     elif direction == "L":
         for _ in range(steps):
             head_position += np.array([-1, 0])
-            print("LEFT")
-    print("head pos:", head_position)
+            tail_position = tail_movement(head_position, tail_position)
+
+positions.sort()  # remove duplicate positions
+print("Solution 1:", len(list(positions for positions, _ in itertools.groupby(positions))))  # remove duplicate positions
