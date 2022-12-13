@@ -72,7 +72,7 @@ def generate_monkeys():
     return monkey_list
 
 
-ROUNDS = [20, 10000]
+ROUNDS = [20, 10000]  # Part 1, Part 2
 for n in ROUNDS:
     monkey_list = generate_monkeys()
     for _ in range(n):
