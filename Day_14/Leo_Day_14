@@ -1,0 +1,106 @@
+import re
+import numpy as np
+import pandas as pd
+
+
+def move(x_pos, y_pos, movement):
+    if field[y_pos + 1, x_pos] == 0.0:
+        y_pos += 1
+    else:
+        if field[y_pos + 1, x_pos - 1] == 0.0:
+            x_pos -= 1
+            y_pos += 1
+        elif field[y_pos + 1, x_pos + 1] == 0.0:
+            x_pos += 1
+            y_pos += 1
+        else:
+            movement = 0
+    return (x_pos, y_pos, movement)
+
+
+with open("Day_14/input_leo.txt", "r") as f:
+    data = f.read()
+
+x = data.split("\n")
+
+field = np.zeros((1000, 90000))
+
+y_v = []
+
+
+for line in x:
+    splited = re.split(",| -> ", line)
+
+    for i in range(0, int(len(splited)) - 2, 2):
+        x1 = int(splited[i])
+        y1 = int(splited[i + 1])
+        x2 = int(splited[i + 2])
+        y2 = int(splited[i + 3])
+
+        if x1 <= x2 and y1 <= y2:
+            for xvals in range(x1, x2 + 1):
+                for yvals in range(y1, y2 + 1):
+                    field[yvals, xvals] = 1
+        elif x1 >= x2 and y1 <= y2:
+            for xvals in range(x2, x1 + 1):
+                for yvals in range(y1, y2 + 1):
+                    field[yvals, xvals] = 1
+        elif x1 <= x2 and y1 >= y2:
+            for xvals in range(x1, x2 + 1):
+                for yvals in range(y2, y1 + 1):
+                    field[yvals, xvals] = 1
+        else:
+            for xvals in range(x2, x1 + 1):
+                for yvals in range(y2, y1 + 1):
+                    field[yvals, xvals] = 1
+
+    if max(y1, y2) not in y_v:
+        y_v.append(max(y1, y2))
+
+for xvals in range(0, 90000):
+    field[max(y_v) + 2, xvals] = 1
+
+
+start_x = 500
+start_y = 0
+# counter = 0
+# i = 0
+
+
+# while i == 0:
+#     movement = 1
+#     x_position = start_x
+#     y_position = start_y
+
+#     while movement == 1 and y_position < 600:
+#         x_position, y_position, movement = move(x_position, y_position, movement)
+
+#     field[y_position][x_position] = 2
+#     counter += 1
+
+#     if y_position >= 600:
+#         i = 1
+
+
+# print(counter - 1)
+
+
+counter = 0
+i = 0
+while i == 0:
+    movement = 1
+    x_position = start_x
+    y_position = start_y
+    a = 0
+
+    while movement == 1:
+        x_position, y_position, movement = move(x_position, y_position, movement)
+        a += 1
+
+    field[y_position][x_position] = 2
+    counter += 1
+    print(x_position)
+    if a == 1:
+        i = 1
+
+print(counter)
